@@ -19,9 +19,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Install nginx sites-available.
 
-cp "$DIR/default" "$DIR/$DOMAIN"
+cp "$DIR/default" "/etc/nginx/sites-available/$DOMAIN"
+sed -i "s/domain/$DOMAIN/g" "/etc/nginx/sites-available/$DOMAIN"
 
-sed -i ""  "s/domain/$DOMAIN/g" "$DIR/$DOMAIN"
+ln -s "/etc/nginx/sites-available/$DOMAIN" "/etc/nginx/sites-enabled/$DOMAIN"
 
-cat "$DIR/default"
-cat "$DIR/$DOMAIN"
+nginx reload
