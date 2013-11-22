@@ -1,0 +1,27 @@
+#!/bin/bash -x
+
+# Make sure only root can run our script
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+# Make sure a domain is passed in
+if [[ $# -eq 0 ]] ; then
+    echo 'use: mksite domain.com'
+    exit 0
+fi
+
+DOMAIN=$1
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+### BASICS ###
+
+# Install nginx sites-available.
+
+cp "$DIR/default" "$DIR/$DOMAIN"
+
+sed -i ""  "s/domain/$DOMAIN/g" "$DIR/$DOMAIN"
+
+cat "$DIR/default"
+cat "$DIR/$DOMAIN"
