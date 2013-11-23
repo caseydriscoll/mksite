@@ -15,6 +15,29 @@ fi
 DOMAIN=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# Make sure site doesn't already exist
+does_file_exist () {
+  if [ -f $1 ];
+  then
+     echo "File $1 exists"
+  else
+     echo "File $1 does not exists"
+     ALL_IS_HERE=false
+  fi
+} 
+
+ALL_IS_HERE=true
+
+does_file_exist "/etc/nginx/sites-available/$DOMAIN"
+does_file_exist "/etc/nginx/sites-enabled/$DOMAIN"
+
+if $ALL_IS_HERE ; then
+  echo "Sorry, $DOMAIN already exists."
+  exit 1
+else
+  echo "Creating $DOMAIN..."
+fi
+
 ### BASICS ###
 
 # Install nginx sites-available.
