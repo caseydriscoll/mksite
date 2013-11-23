@@ -21,11 +21,17 @@ does_file_exist () {
      ALL_IS_HERE=false
   fi
 } 
+does_dir_exist () {
+  if ! [ -d $1 ]; then
+     ALL_IS_HERE=false
+  fi
+} 
 
 ALL_IS_HERE=true
 
 does_file_exist "/etc/nginx/sites-available/$DOMAIN"
 does_file_exist "/etc/nginx/sites-enabled/$DOMAIN"
+does_dir_exist  "/srv/www/$DOMAIN/"
 
 if $ALL_IS_HERE ; then
   echo "Sorry, $DOMAIN already exists."
@@ -47,11 +53,17 @@ mkdir --parents "/srv/www/$DOMAIN/"
 
 service nginx reload
 
+# Download WordPress
+wget http://wordpress.org/latest.zip > "/srv/www/$DOMAIN"
+unzip "/srv/www/$DOMAIN/latest.zip" -d "/srv/www/$DOMAIN/"
+mv "/srv/www/$DOMAIN/wordpress/" "/srv/www/$DOMAIN/public_html/"
+
 # Confirm files were made
 ALL_IS_HERE=true
 
 does_file_exist "/etc/nginx/sites-available/$DOMAIN"
 does_file_exist "/etc/nginx/sites-enabled/$DOMAIN"
+does_dir_exist  "/srv/www/$DOMAIN/public_html"
 
 if $ALL_IS_HERE ; then
   echo "Created $DOMAIN!"
