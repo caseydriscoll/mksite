@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
@@ -24,4 +24,6 @@ sed -i "s/domain/$DOMAIN/g" "/etc/nginx/sites-available/$DOMAIN"
 
 ln -s "/etc/nginx/sites-available/$DOMAIN" "/etc/nginx/sites-enabled/$DOMAIN"
 
-nginx reload
+mkdir --parents "/srv/www/$DOMAIN/"
+
+service nginx reload
