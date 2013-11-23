@@ -54,7 +54,7 @@ mkdir --parents "/srv/www/$DOMAIN/"
 service nginx reload
 
 # Download WordPress
-wget http://wordpress.org/latest.zip > "/srv/www/$DOMAIN"
+wget http://wordpress.org/latest.zip > "/srv/www/$DOMAIN/"
 unzip "/srv/www/$DOMAIN/latest.zip" -d "/srv/www/$DOMAIN/"
 mv "/srv/www/$DOMAIN/wordpress/" "/srv/www/$DOMAIN/public_html/"
 
