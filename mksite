@@ -56,7 +56,19 @@ service nginx reload
 # Download WordPress
 wget http://wordpress.org/latest.zip -P "/srv/www/$DOMAIN/"
 unzip "/srv/www/$DOMAIN/latest.zip" -d "/srv/www/$DOMAIN/"
+rm -rf "/srv/www/$DOMAIN/latest.zip"
 mv "/srv/www/$DOMAIN/wordpress/" "/srv/www/$DOMAIN/public_html/"
+
+# Ask for username, passsword, change domain to dbname
+read -p "Username: " USERNAME
+read -p "Password: " PASSWORD
+DB_NAME=${DOMAIN/\./_}
+
+echo $USERNAME $PASSWORD $DB_NAME
+
+# Create database
+mysql -uroot -p -e "create database $DB_NAME; grant all privileges on $DB_NAME.* to $USERNAME@localhost identified by '$PASSWORD'; flush privileges;"
+
 
 # Confirm files were made
 ALL_IS_HERE=true
